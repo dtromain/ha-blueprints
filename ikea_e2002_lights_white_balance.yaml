@@ -1,0 +1,80 @@
+blueprint:
+  name: Zigbee Warm White Lights Control
+  description: |
+    This blueprint allows you to control warm white lights using a Zigbee 5-button Ikea E2002 remote.
+
+    ### Features
+    - Turn lights on and off
+    - Adjust brightness
+    - Toggle warm white color temperature
+
+    ### Instructions
+    1. Assign this automation to the desired Zigbee E2002 remote.
+    2. Customize the entities and parameters according to your setup.
+
+  domain: automation
+  input:
+    remote:
+      name: Zigbee Remote
+      description: Select the Zigbee remote entity.
+      selector:
+        entity:
+          domain: remote
+
+    lights:
+      name: Lights
+      description: Select the warm white lights to control.
+      selector:
+        entity:
+          domain: light
+
+trigger:
+  platform: event
+  event_type: deconz_event
+  event_data:
+    id: !input remote
+
+action:
+  - choose:
+      - conditions:
+          - condition: numeric_state
+            entity_id: !input remote
+            attribute: event
+            below: 2000
+        sequence:
+          - service: light.toggle
+            target:
+              entity_id: !input lights
+      - conditions:
+          - condition: numeric_state
+            entity_id: !input remote
+            attribute: event
+            above: 2000
+            below: 3000
+        sequence:
+          - service: light.turn_on
+            target:
+              entity_id: !input lights
+          - service: light.turn_on
+            target:
+              entity_id: !input lights
+            data:
+              brightness_step: 25
+      - conditions:
+          - condition: numeric_state
+            entity_id: !input remote
+            attribute: event
+            above: 3000
+            below: 4000
+        sequence:
+          - service: light.toggle
+            target:
+              entity_id: !input lights
+          - service: light.toggle
+            target:
+              entity_id: !input lights
+            data:
+              color_temp_step: 50
+  - service: homeassistant.turn_off
+    target:
+      entity_id: !input remote

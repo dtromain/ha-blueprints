@@ -14,6 +14,8 @@ Home Assistant Blueprints are pre-configured automations that can be easily shar
 
 Explore a variety of blueprints covering different aspects of home automation:
 
+- **Ikea 5 buttons remote white balance lighting Control:** Effortlessly manage smart lights with the Zigbee 5-button Ikea E2002 remote, toggling between warm and cool white temperatures.
+
 ## How to Use
 
 1. **Clone or Download:** Clone this repository or download the desired blueprint YAML file.
