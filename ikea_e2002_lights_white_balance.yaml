@@ -18,8 +18,10 @@ blueprint:
       name: Zigbee Remote
       description: Select the Zigbee remote entity.
       selector:
-        entity:
-          domain: remote
+        device:
+          integration: zha
+          manufacturer: IKEA of Sweden
+          model: Remote Control N2
 
     lights:
       name: Lights
